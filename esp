@@ -543,7 +543,7 @@ do -- Functions
 		ResetOnSpawn = false,
 		DisplayOrder = 10000,
 		IgnoreGuiInset = true,
-		Parent = gethui()
+		Parent = game:GetService("CoreGui")
 	})
 
     function ESP.AddTarget(Target, Type)
