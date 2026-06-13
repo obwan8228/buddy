@@ -89,7 +89,6 @@ getgenv().ESP = {
                     },
 
                     Type = function(Player, CharacterObjects)
-                        if not IsA(Player, "Player") then return end
                         local Humanoid = CharacterObjects.Humanoid
                         if not Humanoid then return end
                         return Humanoid.Health / Humanoid.MaxHealth
@@ -104,7 +103,6 @@ getgenv().ESP = {
                         Transparency = 0.2,
 
                         Type = function(Player, CharacterObjects)
-                            if not IsA(Player, "Player") then return end
                             local Humanoid = CharacterObjects.Humanoid
                             if not Humanoid then return end
                             return Humanoid.Health, Humanoid.Health ~= Humanoid.MaxHealth
@@ -118,7 +116,6 @@ getgenv().ESP = {
                     Color = {Color3_fromRGB(52, 131, 235), Color3_fromRGB(52, 131, 235), Color3_fromRGB(52, 131, 235)},
 
                     Type = function(Player, CharacterObjects)
-                        if not IsA(Player, "Player") then return end
                         local Humanoid = CharacterObjects.Humanoid
                         if not Humanoid then return end
                         return Humanoid.Health / Humanoid.MaxHealth
@@ -133,7 +130,6 @@ getgenv().ESP = {
                         Transparency = 0,
 
                         Type = function(Player, CharacterObjects)
-                            if not IsA(Player, "Player") then return end
                             local Humanoid = CharacterObjects.Humanoid
                             if not Humanoid then return end
                             return Humanoid.Health, Humanoid.Health ~= Humanoid.MaxHealth
@@ -180,7 +176,6 @@ getgenv().ESP = {
 
                 Type = function(Player, CharacterObjects)
                     local Flags = {}
-                    if not IsA(Player, "Player") then return Flags end
 
                     local Humanoid = CharacterObjects.Humanoid
                     if not Humanoid then return Flags end
@@ -799,11 +794,17 @@ end
                     if not CharacterObjects.HumanoidRootPart then
                         if IsA(Target, "BasePart") then
                             CharacterObjects.HumanoidRootPart = Target
-                        elseif CharacterObjects.Character and CharacterObjects.Character.PrimaryPart then
-                            CharacterObjects.HumanoidRootPart = CharacterObjects.Character.PrimaryPart
+                        elseif CharacterObjects.Character then
+                            CharacterObjects.HumanoidRootPart = FindFirstChild(CharacterObjects.Character, "HumanoidRootPart") or CharacterObjects.Character.PrimaryPart
                         end
 
                         return
+                    end
+
+                    if not CharacterObjects.Humanoid then
+                        if CharacterObjects.Character then
+                            CharacterObjects.Humanoid = FindFirstChildWhichIsA(CharacterObjects.Character, "Humanoid")
+                        end
                     end
                 end
 
@@ -951,7 +952,7 @@ end
                         local BarEnabled, BarColor, BarTransparency = BarInfo.Enabled, BarInfo.Color, BarInfo.Transparency
                         local NewParent = Objects[`{BarInfo.Position}BarHolder`]
 
-                        if BarEnabled and IsPlayer then
+                        if BarEnabled and (IsPlayer or not IsBasePart) then
                             local BarValue = BarInfo.Type(Target, CharacterObjects)
                             local BarSizes = {
                                 ["Top"] = UDim2_new(BarValue, 0, 0, 1),
@@ -1014,7 +1015,7 @@ end
                             ["Right"] = Enum.TextXAlignment.Center,
                         }
 
-                        if BarTextEnabled and IsPlayer then
+                        if BarTextEnabled and (IsPlayer or not IsBasePart) then
                             local TextValue, TextVisible = BarInfo.Text.Type(Target, CharacterObjects)
 
         BarText.Text = `{tostring(math_floor(TextValue))}{BarInfo.Text.Ending}`
