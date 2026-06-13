@@ -52,8 +52,8 @@ getgenv().ESP = {
                 
                 Rotation = 90,
                 Color = {
-                    Color3_fromRGB(255, 255, 255),   -- White on top
-                    Color3_fromRGB(47, 78, 124)     -- Accent on bottom
+                    Color3_fromRGB(255, 255, 255),
+                    Color3_fromRGB(47, 78, 124)
                 },
                 Transparency = {0, 0},
 
@@ -83,9 +83,9 @@ getgenv().ESP = {
                     Enabled = false,
                     Position = "Left",
                     Color = {
-                        Color3_fromRGB(47, 78, 124),   -- High Health (Top of bar)
-                        Color3_fromRGB(90, 108, 198),   -- Medium Health
-                        Color3_fromRGB(0, 0, 0)         -- Low Health (Bottom of bar)
+                        Color3_fromRGB(47, 78, 124),
+                        Color3_fromRGB(90, 108, 198),
+                        Color3_fromRGB(0, 0, 0)
                     },
 
                     Type = function(Player, CharacterObjects)
@@ -190,6 +190,76 @@ getgenv().ESP = {
                     return Flags
                 end
             },
+        },
+
+        AI = {
+            Enabled = false,
+            LocalPlayer = false,
+            TeamCheck = false,
+            Font = "Minecraftia",
+            FontSize = 7,
+            FontType = "lowercase",
+
+            MaxDistance = 300,
+            RefreshRate = 99999999,
+
+            BoundingBox = {
+                Enabled = false,
+                DynamicBox = true,
+                IncludeAccessories = false,
+                Type = "2D", 
+                
+                Rotation = 90,
+                Color = {
+                    Color3_fromRGB(255, 255, 255),   -- White on top
+                    Color3_fromRGB(47, 78, 124)     -- Accent on bottom
+                },
+                Transparency = {0, 0},
+
+                Glow = {
+                    Enabled = true,
+                    Rotation = 90,
+                    Color = {
+                        Color3_fromRGB(47, 78, 124), 
+                        Color3_fromRGB(47, 78, 124)
+                    },
+                    Transparency = {0.75, 0.75},
+                },
+
+                Fill = {
+                    Enabled = true,
+                    Rotation = 90,
+                    Color = {
+                        Color3_fromRGB(47, 78, 124), 
+                        Color3_fromRGB(0, 0, 0)
+                    },
+                    Transparency = {0.6, 0.6},
+                },
+            },
+
+            Bars = {
+                HealthBar = {
+                    Enabled = false, Position = "Left",
+                    Color = {Color3_fromRGB(47, 78, 124), Color3_fromRGB(90, 108, 198), Color3_fromRGB(0, 0, 0)},
+                    Type = function(_, CO) local h = CO.Humanoid; return h and h.Health / h.MaxHealth or 0 end,
+                    Text = {
+                        Enabled = false, FollowBar = true, Ending = "", Position = "Left",
+                        Color = Color3_fromRGB(255, 255, 255), Transparency = 0.2,
+                        Type = function(_, CO) local h = CO.Humanoid; return h and (math.floor(h.Health) .. "/" .. math.floor(h.MaxHealth)) or "0", true end,
+                    },
+                },
+                ArmorBar = {
+                    Enabled = false, Position = "Bottom",
+                    Color = {Color3_fromRGB(52, 131, 235), Color3_fromRGB(52, 131, 235), Color3_fromRGB(52, 131, 235)},
+                    Type = function() return 0 end,
+                    Text = { Enabled = false, FollowBar = true, Ending = "", Position = "Left", Color = Color3_fromRGB(255, 255, 255), Transparency = 0, Type = function() return 0, false end },
+                },
+            },
+            Chams = { Enabled = false, DepthMode = Enum.HighlightDepthMode.AlwaysOnTop, Fill = {Color3_fromRGB(90, 108, 198), 0.9}, Outline = {Color3_fromRGB(0, 0, 0), 0.4} },
+            Name = { Enabled = false, UseDisplay = false, Position = "Top", Color = Color3_fromRGB(255, 255, 255), Transparency = 0 },
+            Distance = { Enabled = false, Ending = "m", Position = "Bottom", Color = Color3_fromRGB(255, 255, 255), Transparency = 0 },
+            Weapon = { Enabled = false, Position = "Bottom", Color = Color3_fromRGB(255, 255, 255), Transparency = 0 },
+            Flags = { Enabled = false, Position = "Right", Color = Color3_fromRGB(255, 255, 255), Transparency = 0, Type = function() return {} end },
         },
     },
 
